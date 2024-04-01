@@ -4,18 +4,17 @@ cfg file format:
 ###############begin###########################  
 {  
 // biggest cfg object  
-    {sub-cfg-object-1 data-type-1 data-value-1}  
+    {sub-cfg-object-1 data-value-1}  
     {  
         sub-cfg-object-2  
         {  
-          {sub-cfg-object-3 data-type-2 data-value-2}  
-          {sub-cfg-object-4 data-type-3 data-value-3}  
+          {sub-cfg-object-3 data-value-2}  
+          {sub-cfg-object-4 data-value-3}  
         }  
     }  
 }  
 ###############end#############################  
-sub-cfg-object-x is configuable  
-data-type-x is not configurable  
+sub-cfg-object-x is configuable    
 data-value-x is obviously configurable
   
 2) data encode  

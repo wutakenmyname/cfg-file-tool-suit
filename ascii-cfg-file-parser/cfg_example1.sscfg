@@ -1,12 +1,12 @@
 {
-    {name string mok}
-    {height double 7.77777}
-    {id hex 3324ab3fdd333dddeee}
-    {weight int64 3324}
+    {name mok}
+    {height 7.77777}
+    {id 3324ab3fdd333dddeee}
+    {weight 3324}
     {
         misc
         {
-            booooo int64 6597
+            booooo 6597
         }
     }
 }

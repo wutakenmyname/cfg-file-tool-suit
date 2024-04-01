@@ -1,10 +1,13 @@
 import os
+import sub_cfgs
 
 class Sub_cfgs_parser(object):
     _instance = None
-    type_name_start_middle_set = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    type_name_character_middle_set = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_."
-    type_name_character_end_set = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    type_name_start_character_set = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    type_name_middle_character_set = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_."
+    type_name_end_character_set = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    
+    parser_name_character_set = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_"
         
     def __new__(Sub_cfgs_parser, *args, **kw):
         if Sub_cfgs_parser._instance is None:
@@ -65,14 +68,17 @@ class Sub_cfgs_parser(object):
         except ValueError:
             print("Error: Unable to convert string to int.")
             return None
-        
+
     @staticmethod
-    def good_type_name(type_name):
-        n = type_name.strip()
+    def get_type_name(type_name_string):
+        n = type_name_string.strip()
         if len(n) == 0:
-            return False;
+            return None;
         else:
-            return Sub_cfgs_parser.in_character_set(n, Sub_cfgs_parser.type_name_start_character_set, Sub_cfgs_parser.type_name_start_middle_set, Sub_cfgs_parser.type_name_character_end_set)
+            if Sub_cfgs_parser.in_character_set(n, Sub_cfgs_parser.type_name_start_character_set, Sub_cfgs_parser.type_name_middle_character_set, Sub_cfgs_parser.type_name_end_character_set) is True:
+                return n
+            else:
+                return None
         
     @staticmethod
     def good_type_type(type_name):
@@ -89,18 +95,29 @@ class Sub_cfgs_parser(object):
                 return True
 
     @staticmethod
-    def good_type_id(type_name):
-        n = type_name.strip()
+    def get_type_id(type_id_string):
+        n = type_id_string.strip()
         if len(n) == 0:
-            return False;
+            return None;
         else:
             num = Sub_cfgs_parser.convert_to_int(n)
             if num is None:
-                return False;
+                return None;
             else:
                 if num <= 0 or num > 2147483647:
-                    return False
-                return True
+                    return None
+                return num
+            
+    @staticmethod
+    def get_parser_name(parser_name_string):
+        n = parser_name_string.strip()
+        if len(n) == 0:
+            return None;
+        else:
+            if Sub_cfgs_parser.in_character_set(n, "", Sub_cfgs_parser.parser_name_character_set, "") is True:
+                return n
+            else:
+                return None
     
     @staticmethod
     def parse_file(file_name):
@@ -150,18 +167,35 @@ class Sub_cfgs_parser(object):
                                     print("line [", line_number, "] \"", line, "\" broken line")
                                     continue
                                 else:
+                                    valid = True
                                     c = no_brackets_stripped_line.split(',');
                                     for i in range(len(c)):
                                         c[i] = c[i].strip()
                                         c1 = c[i]
                                         if not c1:
                                             print("line [", line_number, "] \"", line, "\" broken line")
+                                            valid = False
+                                            break
                                     
-                                    if Sub_cfgs_parser.good_type_name(c[0]) is not True or \
-                                        Sub_cfgs_parser.good_type_type(c[1], Sub):
+                                    if valid is False:
+                                        continue
+                                    
+                                    name = Sub_cfgs_parser.get_type_name(c[0])
+                                    id = Sub_cfgs_parser.get_type_id(c[1])
+                                    parser_name = Sub_cfgs_parser.get_parser_name(c[2])
+                                    if name is None or id is None or parser_name is None:
                                         print("line [", line_number, "] \"", line, "\" broken line")
-                                    
-                                            
+                                        continue
+                                    print("type name: ", name, ", type id: ", id, ", parser name: ", parser_name)
+                                    sub_cfgs.Sub_cfgs().register({name: (id, parser_name)})
+                                    continue
+
+
+def main():
+   Sub_cfgs_parser.parse_file("sub_cfgs.conf")
+
+if __name__ == "__main__":
+    main()           
                                             
                                         
 
