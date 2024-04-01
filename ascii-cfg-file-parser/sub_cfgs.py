@@ -1,5 +1,6 @@
 import os
 import threading
+import traceback
 
 class Sub_cfgs(object):
     _instance = None
@@ -18,10 +19,15 @@ class Sub_cfgs(object):
         #self.type_map.update({"BIGGEST_OBJECT_TYPE": 1})
 
     def register(self, type_to_register):
-        add = {}
         for k,v in type_to_register.items():
-            print("key: ", k, ", value: (", v[0], ", ", v[1])
+            print("key: ", k, ", value: (", v[0], ", ", v[1], ")")
         self.lock.acquire()
+        if self.type_map:
+            k = list(type_to_register)[0]
+            print("k: ", k)
+            if k in self.type_map:
+                error_msg = "key: " + "".join(type_to_register.keys()) +" has been registered\n"
+                raise ValueError(error_msg)
         self.type_map.update(type_to_register)
         self.lock.release()
         
@@ -29,6 +35,6 @@ class Sub_cfgs(object):
         print("##############dump start##############")
         self.lock.acquire()
         for k,v in self.type_map.items():
-            print("key: ", k, ", value: ", v)
+            print("key: ", k, ", value: (", v[0], ", ", v[1], ")")
         self.lock.release()
         print("##############dump end##############")

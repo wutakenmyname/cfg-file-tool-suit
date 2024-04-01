@@ -5,8 +5,7 @@ import traceback
 class base_object():
     def __init__(self, object_name):
         if not object_name:
-            stack_trace = traceback.format_stack()
-            error_msg = "object_name不能为空字符串\n" + "".join(stack_trace)
+            error_msg = "object_name不能为空字符串\n"
             raise ValueError(error_msg)
         self.object_name = object_name
         self.child = queue.Queue();
