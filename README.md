@@ -20,7 +20,7 @@ data-value-x is obviously configurable
   
 2) data encode  
 finally   
-there will be a number assigned to sub-cfg-object-x, and I would say it would be a uint64 but for expandability it seems it won't be a fixed uint64 but a unfixed thing we cann't get around a length of this type to indicate the length for [type]
+there will be a number assigned to sub-cfg-object-x, and I would say it would be a uint32 but for expandability it seems it won't be a fixed uint32 but a unfixed thing we cann't get around a length of this type to indicate the length for [type]
 so for sub-cfg-object-x there will be a structure [type][length][value]  
 also there will be a number assigned to data-type-x, and I would say it would be a uint8  
 for data-value-x, it maybe a int64, double or hex, string these data sequence  
