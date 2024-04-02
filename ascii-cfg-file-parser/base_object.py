@@ -8,7 +8,6 @@ class base_object():
             error_msg = "object_name不能为空字符串\n"
             raise ValueError(error_msg)
         self.object_name = object_name
-        self.child = queue.Queue();
     
     def get_object_name(self):
         return self.object_name
