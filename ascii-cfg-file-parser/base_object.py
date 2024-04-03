@@ -12,6 +12,9 @@ class base_object():
     def get_object_name(self):
         return self.object_name
     
+    def set_object_name(self, new_object_name):
+        self.object_name = new_object_name
+        
     def is_biggest_object(self):
         if not self.object_name:
             return False
