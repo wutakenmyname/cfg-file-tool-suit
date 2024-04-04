@@ -13,6 +13,7 @@ class base_object():
         return self.object_name
     
     def set_object_name(self, new_object_name):
+        print("old object name: ", self.object_name, ", new object name: ", new_object_name)
         self.object_name = new_object_name
         
     def is_biggest_object(self):

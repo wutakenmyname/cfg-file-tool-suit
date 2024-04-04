@@ -23,7 +23,8 @@ class Sub_cfgs_parser(object):
                 return file_content
         except FileNotFoundError:
             print("File not found:", file_name)
-            return None
+            error_msg = "File not found:" + file_name + "\n"
+            raise ValueError(error_msg)
     
     @staticmethod
     def is_comment_line(line):

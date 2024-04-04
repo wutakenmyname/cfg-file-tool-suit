@@ -1,13 +1,13 @@
 {
     {a}
-    {name mok}
+    {name "mok"}
     {height 7.77777}
     {id 3324ab3fdd333dddeee}
     {weight 3324}
     {
         misc
         {
-            booooo 6597
+            {booooo 6597}
         }
     }
 }
