@@ -39,15 +39,21 @@ class Sub_cfgs(object):
     
     def get_parser_name_by_object_name(self, object_name):
         self.lock.acquire()
-        res= self.type_map[object_name]
-        ret = res[1]
+        res= self.type_map.get(object_name)
+        if res is None:
+            ret = None
+        else:
+            ret = res[1]
         self.lock.release()
         print("parser for object ", object_name , " is", ret)
         return ret
     def get_object_id_by_object_name(self, object_name):
         self.lock.acquire()
-        res= self.type_map[object_name]
-        ret = res[0]
+        res= self.type_map.get(object_name)
+        if res is None:
+            ret = None
+        else:
+            ret = res[0]
         self.lock.release()
         print("parser for object ", object_name , " is", ret)
         return ret

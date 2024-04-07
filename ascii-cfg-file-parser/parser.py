@@ -4,6 +4,7 @@ import sub_cfgs_parser
 import general_object as g
 import sub_cfgs_parser as sub
 from sub_cfgs import Sub_cfgs as sub_cfg_storage
+import parser_collection as p
 
 class Parser():
    object_name_character_set = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_"
@@ -12,7 +13,8 @@ class Parser():
       self.biggest_object = g.general_object("biggest_object")
       sub.Sub_cfgs_parser.parse_file("sub_cfgs.conf")
       sub_cfg_storage().dump()
-
+      pc = p.Parser_collection()
+      pc.load_all()
    def read_file(self, file_name):
         try:
             with open(file_name, 'r') as file:
@@ -62,7 +64,7 @@ class Parser():
                print("temp object name: ", temp_object_name)
                print("goes here, new object, line number: " + str(line_number))
 
-               new_obj = g.general_object('-')
+               new_obj = g.general_object('_')
                cur_obj.push_child(new_obj)
                cur_obj.set_look_for_object_content(True)
                cur_obj.set_look_for_object_name(False)
@@ -137,7 +139,7 @@ class Parser():
                   failed = False
                   break
                elif self.file_content[pos] == '{':
-                  new_obj = g.general_object('-')
+                  new_obj = g.general_object('_')
                   cur_obj.push_child(new_obj)
                   cur_obj.set_object_name(temp_object_name)
                   temp_object_name = ""
@@ -235,6 +237,12 @@ class Parser():
          if cur_obj != "":
             print("cur obj name: ", cur_obj.get_object_name())
             cur_obj.show_child()
+            parser_name = sub_cfgs.Sub_cfgs().get_parser_name_by_object_name(cur_obj.get_object_name())
+            if parser_name is None:
+               error_msg = "object " + cur_obj.get_object_name() + " is not registered, can not find a parser for it\n"
+               raise ValueError(error_msg)
+            parser = p.Parser_collection().retrieve_parser_by_parser_name(parser_name)
+            return parser.generate_bin_data(cur_obj)
          else:
             error_msg = "line [" + str(line_number) + "]lost connection to biggest_object\n"
             raise ValueError(error_msg)

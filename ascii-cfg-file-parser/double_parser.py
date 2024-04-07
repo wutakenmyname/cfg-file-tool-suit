@@ -21,8 +21,7 @@ class Double_parser(Base_parser):
             double_value = np.float64(cfg_data_string)
             #print(double_value)  # 输出: 3.14
         except ValueError:
-            error_msg = "invalid cfg data" + cfg_data_string + ", it is not a string of double number\n"
-            raise ValueError(error_msg)
+            mib_object
             
         double_bytes = struct.pack('d', double_value)
         
@@ -31,7 +30,8 @@ class Double_parser(Base_parser):
         for i in range(len(object_id_bytes)):
             print("Address:", i, ", Byte value:", hex(object_id_bytes[i]))  
         
-        ret = object_id_bytes + double_bytes  
+        length_bytes = bytearray(struct.pack('<q', 8))
+        ret = object_id_bytes + length_bytes + double_bytes  
         print(binascii.hexlify(ret).decode('utf-8'))           
         return  ret
 

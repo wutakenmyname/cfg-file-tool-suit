@@ -26,17 +26,20 @@ class String_parser(Base_parser):
         if cfg_data_string[0] != "\"" or cfg_data_string[-1] != "\"":
             error_msg = "invalid cfg data" + cfg_data_string + ", it is not a string , it should start with\" and end with \"\n"
             raise ValueError(error_msg)
-        
+        cfg_data_string = cfg_data_string[1:]
+        cfg_data_string = cfg_data_string[0:-1]
         string_bytes = bytearray(cfg_data_string, 'ascii')
         for i in range(len(string_bytes)):
             print("address: ", i, " value: ", hex(string_bytes[i]))
         
+        length = len(cfg_data_string)
+        length_bytes = bytearray(struct.pack('<q', length)) 
         object_id = sub_cfgs.Sub_cfgs().get_object_id_by_object_name(object_name)
         object_id_bytes = bytearray(struct.pack('<q', object_id))
         for i in range(len(object_id_bytes)):
             print("Address:", i, ", Byte value:", hex(object_id_bytes[i]))
             
-        ret = object_id_bytes + string_bytes
+        ret = object_id_bytes + length_bytes + string_bytes
         print(binascii.hexlify(ret).decode('utf-8'))  
         return object_id_bytes + string_bytes
             

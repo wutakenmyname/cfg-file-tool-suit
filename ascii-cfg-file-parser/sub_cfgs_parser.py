@@ -89,7 +89,7 @@ class Sub_cfgs_parser(object):
         else:
             num = Sub_cfgs_parser.convert_to_int(n)
             if num is None:
-                return False;
+                return False
             else:
                 if num <= 0 or num > 128:
                     return False

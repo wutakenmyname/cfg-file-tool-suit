@@ -17,6 +17,7 @@ class Hex_parser(Base_parser):
         cfg_data_string = hex_object.get_cfg_data()
         print("object name: ", "cfg data: ", cfg_data_string)
         bin_data = bytearray()
+
         if cfg_data_string == "":
             return None
         try:
@@ -27,11 +28,13 @@ class Hex_parser(Base_parser):
             error_msg = "invalid cfg data" + cfg_data_string + ", it is not a string of hex sequence\n"
             raise ValueError(error_msg)
         
+        length = len(cfg_data_string)
+        length_bytes = bytearray(struct.pack('<q', int(length/2)))
         object_id = sub_cfgs.Sub_cfgs().get_object_id_by_object_name(object_name)
         object_id_bytes = bytearray(struct.pack('<q', object_id))   
         for i in range(len(object_id_bytes)):
             print("Address:", i, ", Byte value:", hex(object_id_bytes[i]))   
-        ret =  object_id_bytes + hex_bytes
+        ret =  object_id_bytes + length_bytes + hex_bytes
         
         print(binascii.hexlify(ret).decode('utf-8'))        
         return  ret

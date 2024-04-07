@@ -19,6 +19,9 @@ class Object_parser(base_parser.Base_parser):
             ret = bytearray()
             for child in child_list:
                 parser_name = sub_cfgs.Sub_cfgs().get_parser_name_by_object_name(child.get_object_name())
+                if parser_name is None:
+                    error_msg = "object " + child.get_object_name() + " is not registered, can not find a parser for it\n"
+                    raise ValueError(error_msg)
                 parser = p.Parser_collection().retrieve_parser_by_parser_name(parser_name)
                 ret = ret + parser.generate_bin_data(child)
 
