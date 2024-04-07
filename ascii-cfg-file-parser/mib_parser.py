@@ -70,14 +70,14 @@ class Mib_parser(base_parser.Base_parser):
                     
             ret = ret + bytearray(struct.pack('B', res_queue.get()))
                 
-        for i in range(len(ret)):
-            print("Address:", i, ", Byte value:", hex(ret[i]))   
+        #for i in range(len(ret)):
+         #   print("Address:", i, ", Byte value:", hex(ret[i]))   
             
         return ret
     def generate_bin_data(self, mib_object):
         object_name = mib_object.get_object_name()
         cfg_data_string = mib_object.get_cfg_data()
-        print("object name: ", "cfg data: ", cfg_data_string)
+        print("object name: ", object_name, " cfg data: ", cfg_data_string)
         cfg_data_string = cfg_data_string.strip()
         mib_parts = cfg_data_string.split(None)
         if len(mib_parts) != 3:

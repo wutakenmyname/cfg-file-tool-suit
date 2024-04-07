@@ -5,7 +5,7 @@ class Sub_cfgs_parser(object):
     _instance = None
     type_name_start_character_set = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_"
     type_name_middle_character_set = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_"
-    type_name_end_character_set = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    type_name_end_character_set = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_"
     
     parser_name_character_set = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_"
         
@@ -50,7 +50,7 @@ class Sub_cfgs_parser(object):
             if start_character_set.find(string[0]) == -1:
                 return False
                 
-        if middle_character_set:
+        if middle_character_set and len(string) >= 3:
             for c in string[1:-1]:
                 if middle_character_set.find(c) == -1:
                     return False
@@ -74,11 +74,13 @@ class Sub_cfgs_parser(object):
     def get_type_name(type_name_string):
         n = type_name_string.strip()
         if len(n) == 0:
+            print("len 0: ", type_name_string)
             return None;
         else:
             if Sub_cfgs_parser.in_character_set(n, Sub_cfgs_parser.type_name_start_character_set, Sub_cfgs_parser.type_name_middle_character_set, Sub_cfgs_parser.type_name_end_character_set) is True:
                 return n
             else:
+                print("not in character set: ", type_name_string)
                 return None
         
     @staticmethod
@@ -140,7 +142,7 @@ class Sub_cfgs_parser(object):
                         print("line [", line_number, "] empty line")
                         continue
                     elif len(stripped_line) < 2:
-                        print("line [", line_number, "] \"", line, "\" broken line")
+                        print("line [", line_number, "] \"", line, "\" broken line1")
                         continue
                     elif len(stripped_line) == 2 and Sub_cfgs_parser.is_comment_line(stripped_line) is True:
                         print("line [", line_number, "] \"", line, "\" empty comment line")
@@ -150,7 +152,7 @@ class Sub_cfgs_parser(object):
                             print("line [", line_number, "] \"", line, "\" comment line")
                             continue
                         else:
-                            print("line [", line_number, "] \"", line, "\" broken line")
+                            print("line [", line_number, "] \"", line, "\" broken line2")
                     else:
                         line_length = len(stripped_line)
                         if Sub_cfgs_parser.is_comment_line(stripped_line) is True:
@@ -158,14 +160,14 @@ class Sub_cfgs_parser(object):
                             continue
                         else:
                             if stripped_line[0] != '(' or stripped_line[line_length - 1] != ')':
-                                print("line [", line_number, "] \"", line, "\" broken line")
+                                print("line [", line_number, "] \"", line, "\" broken line3")
                                 continue
                             else:
                                 temp = stripped_line
                                 temp = temp[1:]
                                 no_brackets_stripped_line = temp[:-1]
                                 if no_brackets_stripped_line.count(',') != 2:
-                                    print("line [", line_number, "] \"", line, "\" broken line")
+                                    print("line [", line_number, "] \"", line, "\" broken line4")
                                     continue
                                 else:
                                     valid = True
@@ -174,7 +176,7 @@ class Sub_cfgs_parser(object):
                                         c[i] = c[i].strip()
                                         c1 = c[i]
                                         if not c1:
-                                            print("line [", line_number, "] \"", line, "\" broken line")
+                                            print("line [", line_number, "] \"", line, "\" broken line5")
                                             valid = False
                                             break
                                     
@@ -185,7 +187,7 @@ class Sub_cfgs_parser(object):
                                     id = Sub_cfgs_parser.get_type_id(c[1])
                                     parser_name = Sub_cfgs_parser.get_parser_name(c[2])
                                     if name is None or id is None or parser_name is None:
-                                        print("line [", line_number, "] \"", line, "\" broken line")
+                                        print("line [", line_number, "] \"", line, "\" broken line6")
                                         continue
                                     print("type name: ", name, ", type id: ", id, ", parser name: ", parser_name)
                                     sub_cfgs.Sub_cfgs().register({name: (id, parser_name)})

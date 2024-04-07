@@ -13,7 +13,7 @@ class Int64_parser(Base_parser):
     def generate_bin_data(self, int64_object):
         object_name = int64_object.get_object_name()
         cfg_data_string = int64_object.get_cfg_data()
-        print("object name: ", "cfg data: ", cfg_data_string)
+        print("object name: ", object_name, " cfg data: ", cfg_data_string)
         bin_data = bytearray()
         if cfg_data_string == "":
             return None
@@ -26,18 +26,18 @@ class Int64_parser(Base_parser):
             
         int64_bytes = bytearray(struct.pack('<q', int64_value))
        
-        for i in range(len(int64_bytes)):
-            print("Address:", i, ", Byte value:", hex(int64_bytes[i]))
+        #for i in range(len(int64_bytes)):
+        #    print("Address:", i, ", Byte value:", hex(int64_bytes[i]))
             
         object_id = np.int64(sub_cfgs.Sub_cfgs().get_object_id_by_object_name(object_name))
         object_id_bytes = bytearray(struct.pack('<q', object_id))   
-        for i in range(len(object_id_bytes)):
-            print("Address:", i, ", Byte value:", hex(object_id_bytes[i]))
+        #for i in range(len(object_id_bytes)):
+        #    print("Address:", i, ", Byte value:", hex(object_id_bytes[i]))
             
         length_bytes = bytearray(struct.pack('<q', 8))       
         ret = object_id_bytes + length_bytes + int64_bytes  
-        print(binascii.hexlify(ret).decode('utf-8'))     
-        return  
+        #print(binascii.hexlify(ret).decode('utf-8'))     
+        return  ret
 
 def main():
     sub_cfgs_parser.Sub_cfgs_parser.parse_file("sub_cfgs.conf")

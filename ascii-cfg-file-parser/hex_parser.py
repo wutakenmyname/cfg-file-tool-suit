@@ -15,7 +15,7 @@ class Hex_parser(Base_parser):
     def generate_bin_data(self, hex_object):
         object_name = hex_object.get_object_name()
         cfg_data_string = hex_object.get_cfg_data()
-        print("object name: ", "cfg data: ", cfg_data_string)
+        print("object name: ", object_name, " cfg data: ", cfg_data_string)
         bin_data = bytearray()
 
         if cfg_data_string == "":

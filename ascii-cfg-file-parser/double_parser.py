@@ -12,7 +12,7 @@ class Double_parser(Base_parser):
     def generate_bin_data(self, double_object):
         object_name = double_object.get_object_name()
         cfg_data_string = double_object.get_cfg_data()
-        print("object name: ", "cfg data: ", cfg_data_string)
+        print("object name: ", object_name, " cfg data: ", cfg_data_string)
         bin_data = bytearray()
         
         if cfg_data_string == "":

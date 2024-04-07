@@ -45,7 +45,7 @@ class Sub_cfgs(object):
         else:
             ret = res[1]
         self.lock.release()
-        print("parser for object ", object_name , " is", ret)
+        print("parser name for object ", object_name , " is", ret)
         return ret
     def get_object_id_by_object_name(self, object_name):
         self.lock.acquire()
@@ -55,7 +55,7 @@ class Sub_cfgs(object):
         else:
             ret = res[0]
         self.lock.release()
-        print("parser for object ", object_name , " is", ret)
+        print("object id for object ", object_name , " is", ret)
         return ret
     
     def dump(self):

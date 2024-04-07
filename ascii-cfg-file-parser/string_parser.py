@@ -13,7 +13,7 @@ class String_parser(Base_parser):
     def generate_bin_data(self, string_object):
         object_name = string_object.get_object_name()
         cfg_data_string = string_object.get_cfg_data()
-        print("object name: ", "cfg data: ", cfg_data_string)
+        print("object name: ", object_name, " cfg data: ", cfg_data_string)
         bin_data = bytearray()
         if cfg_data_string == "":
             print("empty string")
@@ -41,7 +41,7 @@ class String_parser(Base_parser):
             
         ret = object_id_bytes + length_bytes + string_bytes
         print(binascii.hexlify(ret).decode('utf-8'))  
-        return object_id_bytes + string_bytes
+        return ret
             
 
 def main():
