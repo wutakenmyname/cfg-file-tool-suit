@@ -11,6 +11,7 @@ class Sub_cfgs(object):
             Sub_cfgs._instance.type_map = {}
             print("call __init__")
             Sub_cfgs._instance.type_map.update({"biggest_object": (1, "object_parser")})
+            Sub_cfgs._instance.type_map.update({"_": (2, "object_parser")})
         return Sub_cfgs._instance
     #def __init__(self):
         #self.lock = threading.Lock()
