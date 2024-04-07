@@ -1,3 +1,4 @@
+import os
 import queue
 import sub_cfgs
 import sub_cfgs_parser
@@ -5,6 +6,7 @@ import general_object as g
 import sub_cfgs_parser as sub
 from sub_cfgs import Sub_cfgs as sub_cfg_storage
 import parser_collection as p
+import hashlib
 
 class Parser():
    object_name_character_set = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_"
@@ -242,7 +244,23 @@ class Parser():
                error_msg = "object " + cur_obj.get_object_name() + " is not registered, can not find a parser for it\n"
                raise ValueError(error_msg)
             parser = p.Parser_collection().retrieve_parser_by_parser_name(parser_name)
-            return parser.generate_bin_data(cur_obj)
+            bin_data = parser.generate_bin_data(cur_obj)
+            byte_array = bytes(bin_data)
+
+            # 使用 sha256 进行哈希计算
+            hash_obj = hashlib.sha256(byte_array)
+            hash_result = hash_obj.hexdigest()
+            hash_bytes = bytearray.fromhex(hash_result)
+            print("SHA256 hash:", hash_result)
+            for i in range(len(hash_bytes)):
+               print("", hex(hash_bytes[i]), end="")
+               
+            output_file_name = file_name.split(".")[0] + ".bin"
+            if os.path.exists(output_file_name):
+               os.remove(output_file_name)
+            with open(output_file_name, 'w') as file:
+               file.write((hash_bytes + bin_data).hex())
+            return 
          else:
             error_msg = "line [" + str(line_number) + "]lost connection to biggest_object\n"
             raise ValueError(error_msg)
