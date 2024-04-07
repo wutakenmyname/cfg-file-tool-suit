@@ -258,8 +258,8 @@ class Parser():
             output_file_name = file_name.split(".")[0] + ".bin"
             if os.path.exists(output_file_name):
                os.remove(output_file_name)
-            with open(output_file_name, 'w') as file:
-               file.write((hash_bytes + bin_data).hex())
+            with open(output_file_name, 'wb') as file:
+               file.write((hash_bytes + bin_data))
             return 
          else:
             error_msg = "line [" + str(line_number) + "]lost connection to biggest_object\n"
