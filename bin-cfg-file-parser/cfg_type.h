@@ -1,8 +1,8 @@
 #ifndef _CFG_TYPE_H
 #define _CFG_TYPE_H
 
-#define ID_1 1
-#define ID_2 2
+#define BIGGEST_OBJECT 1
+#define UNNAMED_OBJECT 2
 #define NAME 3
 #define HEIGHT 4
 #define WEIGHT 5

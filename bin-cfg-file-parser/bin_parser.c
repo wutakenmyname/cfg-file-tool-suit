@@ -190,8 +190,8 @@ void sha256_hash_string(const char *string, int64 string_len, unsigned char *has
 
 static object_handler_t handlers[] = 
 {
-    {ID_1, handle_default},
-    {ID_2, handle_default},
+    {BIGGEST_OBJECT, handle_default},
+    {UNNAMED_OBJECT, handle_default},
     {NAME, handle_name},
     {HEIGHT, handle_height},
     {WEIGHT, handle_weight},
