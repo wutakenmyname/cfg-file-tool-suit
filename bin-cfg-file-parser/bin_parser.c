@@ -57,6 +57,102 @@ static int handle_boo(unsigned char *data, int64 data_len)
 
 static int handle_snmpmib(unsigned char *data, int64 data_len)
 {
+    mprintf("goes here\n");
+    unsigned char oid_len = 0;
+    unsigned char value_type = 0;
+    int64 value_len = -1;
+    unsigned char *oid_int_sequence = NULL;
+    int i = 0;
+    int j = 0;
+    unsigned char oid_parts = 0;
+    unsigned char *oid_data = NULL;
+
+    oid_len = *(unsigned char *)data;
+    printf("oid_len: %hhu\n", oid_len);
+    oid_data = (unsigned char *)data + 1;
+    value_len = data_len - 1 - oid_len - 1;
+
+    if (oid_len < 2)
+    {
+        mprintf("oid is too short\n");
+        return -1;
+    }
+    oid_int_sequence = (unsigned char*)malloc(oid_len * 2 * sizeof(int));
+    if (oid_int_sequence == NULL)
+    {
+        mprintf("malloc oid_int_sequence failed\n");
+        return -1;
+    }
+    memset(oid_int_sequence, 0, oid_len * 2 * sizeof(int));
+
+    {
+        ((int *)oid_int_sequence)[0] = (*(unsigned char *)oid_data) / 40;
+        ((int *)oid_int_sequence)[1] = '.';
+        ((int *)oid_int_sequence)[2] = (*(unsigned char *)oid_data) % 40;
+        ((int *)oid_int_sequence)[3] = '.';
+        oid_parts = 4;
+        i = 1;
+        j = 4;
+        int cur_num = 0;
+        unsigned char cur_byte = 0;
+        while (i < oid_len && j < oid_len * 2)
+        {
+            cur_byte = *((unsigned char *)oid_data + i);
+            //mprintf("cur_byte: %hhu\n", cur_byte);
+            if ((cur_byte & 0x80) == 0x80)
+            {
+                cur_num = cur_num * 128 + cur_byte & 0x7f;
+                i = i + 1;
+                cur_byte = 0;
+                continue;
+            }
+            else
+            {
+                cur_num = cur_num * 128 + cur_byte;
+                ((int *)oid_int_sequence)[j] = cur_num;
+                ((int *)oid_int_sequence)[j + 1] = '.';
+                oid_parts = oid_parts + 2;
+                j = j + 2;
+                cur_num = 0;
+                cur_byte = 0;
+            }
+        }
+    }
+
+    printf("stringfy oid is: ");
+    for (i = 0; i < oid_parts - 1; i++)
+    {
+        if (((int *)oid_int_sequence)[i] == 46)
+        {
+            printf(".");
+        }
+        else
+        {
+            printf("%d", ((int *)oid_int_sequence)[i]);
+        }
+        
+    }
+
+    oid_data = (unsigned char *)data + 1 + oid_len;
+    printf("\n");
+    value_type = *(unsigned char *)oid_data;
+    oid_data = oid_data + 1;
+    printf("value type: %hhu, value len: %lld\n", value_type, value_len);
+    if (value_type != 4)
+    {
+        mprintf("just support type 4 string now\n");
+        free(oid_int_sequence);
+        return 0;
+    }
+
+    printf("string value: ");
+    for (i = 0; i < value_len; i++)
+    {
+        printf("%c", oid_data[i]);
+    }
+    printf("\n");
+    
+    
     
     return 0;
 }
@@ -71,7 +167,7 @@ static int handle_id(unsigned char *data, int64 data_len)
         int i = 0;
         for (; i < data_len; i++)
         {
-            printf("%02x", buff + i);
+            printf("%02x", buff[i]);
         }
         printf("\n");
     }

@@ -3,6 +3,7 @@
     {height 7.77777}
     {id 3324ab3fdd333dddee}
     {weight 3324}
+    {snmpmib my_name string "hello"}
     {
         misc
         {

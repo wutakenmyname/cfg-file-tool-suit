@@ -109,17 +109,21 @@ class Mib_parser(base_parser.Base_parser):
         
         oid_bytes = self.generate_oid_arraybyte_by_oid_string(oid_string)
         object_id = np.int64(sub_cfgs.Sub_cfgs().get_object_id_by_object_name(object_name))
+        print("object id for snmpmib: ", object_id)
         object_id_bytes = bytearray(struct.pack('<q', object_id))
-        
-        length = len(oid_bytes) + len(type_bytes) + len(value_bytes)
-        length_bytes = bytearray(struct.pack('<q', length))
         
         oid_length = len(oid_bytes)
         oid_length_bytes = bytearray(struct.pack('B', oid_length))
         
+        length = len(oid_length_bytes) + len(oid_bytes) + len(type_bytes) + len(value_bytes)
+        length_bytes = bytearray(struct.pack('<q', length))
+        
+        
+        
         ret = object_id_bytes + length_bytes + oid_length_bytes + oid_bytes + type_bytes + value_bytes
+        print("snmpmib encode:")
         for i in range(len(ret)):
-            print("Address:", i, ", Byte value:", hex(ret[i]))   
+            print("", hex(ret[i]), end="")   
 
         return ret
     
