@@ -13,10 +13,13 @@ class Parser():
    def __init__(self):
       self.file_content = ""
       self.biggest_object = g.general_object("biggest_object")
-      sub.Sub_cfgs_parser.parse_file("sub_cfgs.conf")
+   
+   def init(self, sub_cfg_file):
+      sub.Sub_cfgs_parser.parse_file(sub_cfg_file)
       sub_cfg_storage().dump()
       pc = p.Parser_collection()
       pc.load_all()
+
    def read_file(self, file_name):
         try:
             with open(file_name, 'r') as file:
@@ -27,7 +30,7 @@ class Parser():
             print("File not found:", file_name)
             return None
    
-   def parse(self, file_name):
+   def parse(self, file_name, output_file_name):
       self.file_content = self.read_file(file_name)
       if self.file_content is None:
          error_msg = "parse file " + file_name + " failed\n"
@@ -254,12 +257,15 @@ class Parser():
             print("SHA256 hash:", hash_result)
             for i in range(len(hash_bytes)):
                print("", hex(hash_bytes[i]), end="")
-               
-            output_file_name = file_name.split(".")[0] + ".bin"
+            
+            print("\n")
+            
+            print("output file name: ", output_file_name)
             if os.path.exists(output_file_name):
                os.remove(output_file_name)
             with open(output_file_name, 'wb') as file:
                file.write((hash_bytes + bin_data))
+               print("write file end")
             return 
          else:
             error_msg = "line [" + str(line_number) + "]lost connection to biggest_object\n"
@@ -273,7 +279,8 @@ class Parser():
 
 def main():
    parser = Parser()
-   parser.parse("cfg_example1.sscfg")
+   parser.init("sub_cfgs.conf")
+   parser.parse("cfg_example1.sscfg", "cfg_example1.bin")
 
 if __name__ == "__main__":
     main()

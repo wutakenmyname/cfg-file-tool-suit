@@ -1,6 +1,7 @@
 import threading
 import inspect
 import importlib
+import os
 
 
 class Parser_collection(object):
@@ -26,6 +27,8 @@ class Parser_collection(object):
             
     def load_all(self):
         file_name = "parser.conf"
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        file_name = os.path.join(script_dir, file_name)
         try:
             with open(file_name, 'r') as file:
                 file_content = file.read()  # 读取文件的所有内容

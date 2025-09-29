@@ -11,7 +11,8 @@ import sub_cfgs
 import general_object
 import sub_cfgs_parser
 import mib_storage as m
-import character_set_validator 
+import character_set_validator
+import os
 
 class Mib_parser(base_parser.Base_parser):
     _instance = None
@@ -20,7 +21,9 @@ class Mib_parser(base_parser.Base_parser):
             Mib_parser._instance = object.__new__(Mib_parser, *args, **kw)
             Mib_parser._instance.lock = threading.Lock()
             mib_storage = m.Mib_storage()
-            mib_storage.generate_from_file("mib_cfg")
+            script_dir = os.path.dirname(os.path.abspath(__file__))  # 脚本所在目录
+            file_name = os.path.join(script_dir, "mib_cfg")
+            mib_storage.generate_from_file(file_name)
             Mib_parser.mib_storage = mib_storage
         return Mib_parser._instance
     
