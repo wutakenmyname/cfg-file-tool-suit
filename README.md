@@ -43,7 +43,8 @@ a. first, compile c project.
     cmake .
     make
 
-and then you get bin_parser exec file, use it to parse a bin format file
-example
+and then you get bin_parser exec file, use it to parse a bin format file with this command
     ./bin_parser -f your_bin_file
+example
+    ./bin_parser -f ../cfg_example1.bin
 ```
