@@ -27,7 +27,9 @@ b. there will be another int64 number indicate the length of cfg data following,
 
 c. the last to come is cfg data, depending on the type int64, double, hex, string or other type like snmpmib
 and for the objects which composed of other objects there won't be any data expressing it  
-only those objects carrying real cfg data would exit in bin file 
+only those objects carrying real cfg data would exit in bin file
+
+d. only support non-nested tlv, embeded tlv need a special parser for embedded tlv content in value part.  
 
 
 3) command  for trans your ascii format cfg file into a bin format file
